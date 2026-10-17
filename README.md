@@ -1,5 +1,10 @@
 # speak-selection
 
+[![Release](https://img.shields.io/github/v/release/AlexisDx13/speak-selection)](https://github.com/AlexisDx13/speak-selection/releases/latest)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
+[![Platform](https://img.shields.io/badge/platform-Windows-0078D6)](#requirements)
+[![License: MIT](https://img.shields.io/github/license/AlexisDx13/speak-selection)](LICENSE)
+
 Read the selected text aloud on Windows with a global hotkey, using online neural voices.
 
 Select text in any application, press `Ctrl+Alt+L` and it is read aloud. Press it again to stop.
