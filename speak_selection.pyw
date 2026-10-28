@@ -2,7 +2,7 @@
 speak_selection.pyw — Reads the selected text aloud using online neural voices (via edge-tts).
 
 Usage:   select text in any app and press the hotkey (see HOTKEY below). Press it again to stop.
-Install: pip install edge-tts keyboard pyperclip pystray pillow
+Install: pip install -r requirements.txt
 Run:     double-click (runs with pythonw, no console window). An icon stays in the system tray
          (grey when idle, green while speaking); right-click > Quit to close it.
 Start with Windows: add a shortcut to this file in  shell:startup
