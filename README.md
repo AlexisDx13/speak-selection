@@ -14,7 +14,7 @@ Select text in any application, press `Ctrl+Alt+L` and it is read aloud. Press i
 
 ## Features
 
-- **Global hotkey**: works in any application; the selection is copied and your clipboard is restored afterwards.
+- **Global hotkey**: works in any application; the selection is copied and your clipboard text is restored afterwards (other clipboard content, such as images or files, is not).
 - **Text cleanup**: strips Markdown formatting, emojis and list markers; reads Markdown links by their text only; replaces bare URLs and fenced code blocks with a short spoken placeholder.
 - **Fast start**: the text is synthesized in chunks, so playback starts after the first chunk while the rest is synthesized in the background.
 - **System tray icon**: grey when idle, green while speaking; right-click to stop reading or quit.

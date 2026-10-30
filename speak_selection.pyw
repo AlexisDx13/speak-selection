@@ -70,9 +70,15 @@ def copy_selection():
     else:
         return ""                                       # nothing was selected
     time.sleep(0.05)
-    text = pyperclip.paste()
+    try:
+        text = pyperclip.paste()
+    except pyperclip.PyperclipException:                # clipboard held by another app
+        text = ""
     if previous is not None:
-        pyperclip.copy(previous)
+        try:
+            pyperclip.copy(previous)
+        except pyperclip.PyperclipException:            # keep reading even if it cannot be restored
+            pass
     return text
 
 
