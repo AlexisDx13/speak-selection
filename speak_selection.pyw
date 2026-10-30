@@ -10,6 +10,7 @@ Start with Windows: add a shortcut to this file in  shell:startup
 import asyncio
 import atexit
 import ctypes
+import glob
 import os
 import queue
 import re
@@ -37,8 +38,7 @@ MAX_CHUNK = 600                # characters in the remaining chunks
 # ── State ─────────────────────────────────────────────────────────────────────
 user32 = ctypes.windll.user32
 winmm = ctypes.windll.winmm
-TMP = tempfile.mkdtemp(prefix="speak_selection_")
-atexit.register(shutil.rmtree, TMP, ignore_errors=True)
+TMP = None                     # created at startup, once this is the only instance
 stop_event = threading.Event()
 worker = None
 producer = None
@@ -244,6 +244,10 @@ if __name__ == "__main__":
     if ctypes.get_last_error() == 183:                  # ERROR_ALREADY_EXISTS: another instance is running
         winsound.MessageBeep(winsound.MB_ICONASTERISK)
         raise SystemExit
+    for old in glob.glob(os.path.join(tempfile.gettempdir(), "speak_selection_*")):
+        shutil.rmtree(old, ignore_errors=True)          # left behind when Windows shut down without "Quit"
+    TMP = tempfile.mkdtemp(prefix="speak_selection_")
+    atexit.register(shutil.rmtree, TMP, ignore_errors=True)
     keyboard.add_hotkey(HOTKEY, on_hotkey)
     tray = pystray.Icon(
         "speak_selection",
