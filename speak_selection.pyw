@@ -131,8 +131,21 @@ def produce(parts, q, stop):
     except Exception as exc:                            # no internet, invalid voice...
         q.put(exc)
     finally:
+        if stop.is_set():                               # a chunk queued after run() emptied the queue
+            discard(q)
         q.put(None)
         loop.close()
+
+
+def discard(q):
+    """Delete the chunks left in the queue: nobody will play them."""
+    while True:
+        try:
+            item = q.get_nowait()
+        except queue.Empty:
+            return
+        if isinstance(item, str):
+            os.remove(item)
 
 
 def play(path, stop):
@@ -156,8 +169,8 @@ def run(stop):
         winsound.MessageBeep(winsound.MB_ICONASTERISK)
         return
     set_speaking(True)
+    q = queue.Queue()
     try:
-        q = queue.Queue()
         producer = threading.Thread(target=produce, args=(split_chunks(text), q, stop), daemon=True)
         producer.start()
         while not stop.is_set():
@@ -172,6 +185,7 @@ def run(stop):
                 break
             play(item, stop)
     finally:
+        discard(q)                                      # stopped before playing every chunk
         set_speaking(False)
 
 
