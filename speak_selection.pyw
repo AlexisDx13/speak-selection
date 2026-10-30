@@ -89,10 +89,11 @@ EMOJI = re.compile("[\U0001F000-\U0001FAFF\u2600-\u27BF\u2B00-\u2BFF\uFE0F\u200D
 def clean(text):
     text = re.sub(r"```.*?```", lambda m: f"\n{CODE_BLOCK_TEXT}\n", text, flags=re.S)
     text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)          # [text](url) -> text
-    text = re.sub(r"https?://\S+", lambda m: LINK_TEXT, text)
+    text = re.sub(r"https?://\S+?(?=[.,;:!?)\]>]*(?:\s|$))", lambda m: LINK_TEXT, text)  # keeps trailing punctuation
     text = EMOJI.sub("", text)
+    text = re.sub(r"^[ \t]*(?:#{1,6}[ \t]+|(?:>[ \t]*)+)", "", text, flags=re.M)  # headings and quotes
     text = re.sub(r"^\s*(?:[-*•]|\d+\.)\s+", "", text, flags=re.M)  # bullets and numbering
-    text = re.sub(r"[`*#>|]", "", text)
+    text = re.sub(r"[`*|]", "", text)
     text = re.sub(r"[ \t]+", " ", text)
     text = re.sub(r"([^\s.!?:;,])[ \t]*\n", r"\1.\n", text)       # pause at the end of each line
     return text.strip()
